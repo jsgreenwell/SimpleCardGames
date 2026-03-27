@@ -1,4 +1,4 @@
-public class Solitaire {
+public class CardGame {
     // Boolean variable which is true until player wants to quit
     public boolean keepPlaying = true;
 
@@ -7,7 +7,7 @@ public class Solitaire {
      * You will create this as for now it just prints out - TBD.
      */
     public void run() {
-        System.out.println("Solitaire - TBD");
+        System.out.println("Card Game - TBD");
     }
 
     /**

@@ -1,4 +1,4 @@
-public class Fish {
+public class Wheel {
     // Boolean variable which is true until player wants to quit
     public boolean keepPlaying = true;
 
@@ -7,7 +7,7 @@ public class Fish {
      * You will create this as for now it just prints out - TBD.
      */
     public void run() {
-        System.out.println("Go Fish - TBD");
+        System.out.println("Wheel of Fortune (or hangman) - TBD");
     }
 
     /**

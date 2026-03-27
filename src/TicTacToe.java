@@ -1,4 +1,4 @@
-public class BlackJack {
+public class TicTacToe {
     // Boolean variable which is true until player wants to quit
     public boolean keepPlaying = true;
 
@@ -7,7 +7,7 @@ public class BlackJack {
      * You will create this as for now it just prints out - TBD.
      */
     public void run() {
-        System.out.println("Black Jack - TBD");
+        System.out.println("Tic Tac Toe - TBD");
     }
 
     /**
