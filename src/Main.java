@@ -1,15 +1,72 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Scanner scan = new Scanner(System.in);
+        short choice = 100;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        while (choice != 9) {
+            System.out.print("""
+                    Hello and Welcome to the main menu!
+                    Please select from the following options (or 9 to exit):
+                        0: Boogle
+                        1: Card Game
+                        2: Rock Paper Scissors
+                        3: Word Scamble
+                        4: Tic Tac Toe
+                        5: Wheel of Fortune
+                        9: Exit
+                    Enter the number of your selection:
+                    """);
+
+            choice = Short.parseShort(scan.nextLine());
+            switch (choice) {
+                case 0:
+                    Boogle boogle = new Boogle();
+                    while (boogle.keepPlaying) {
+                        boogle.run();
+                        boogle.checkExit();
+                    }
+                    break;
+                case 1:
+                    CardGame cardgame = new CardGame();
+                    while (cardgame.keepPlaying) {
+                        cardgame.run();
+                        cardgame.checkExit();
+                    }
+                    break;
+                case 2:
+                    RockPaperScissors rps = new RockPaperScissors();
+                    while (rps.keepPlaying) {
+                        rps.run();
+                        rps.checkExit();
+                    }
+                    break;
+                case 3:
+                    Scramble scramble = new Scramble();
+                    while (scramble.keepPlaying) {
+                        scramble.run();
+                        scramble.checkExit();
+                    }
+                    break;
+                case 4:
+                    TicTacToe ttt = new TicTacToe();
+                    while (ttt.keepPlaying) {
+                        ttt.run();
+                        ttt.checkExit();
+                    }
+                    break;
+                case 5:
+                    Wheel wheel = new Wheel();
+                    while (wheel.keepPlaying) {
+                        wheel.run();
+                        wheel.checkExit();
+                    }
+                    break;
+                default:
+                    System.out.println("Thanks for playing!\nGoodbye!");
+                    choice = 9; // set to exit
+            }
         }
     }
 }
