@@ -10,7 +10,7 @@ public class Main {
                     Hello and Welcome to the main menu!
                     Please select from the following options (or 9 to exit):
                         0: Boogle
-                        1: Card Game
+                        1: War
                         2: Rock Paper Scissors
                         3: Word Scamble
                         4: Tic Tac Toe
