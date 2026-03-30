@@ -29,10 +29,10 @@ public class Main {
                     }
                     break;
                 case 1:
-                    CardGame cardgame = new CardGame();
-                    while (cardgame.keepPlaying) {
-                        cardgame.run();
-                        cardgame.checkExit();
+                    War war = new War();
+                    while (war.keepPlaying) {
+                        war.run();
+                        war.checkExit();
                     }
                     break;
                 case 2:
