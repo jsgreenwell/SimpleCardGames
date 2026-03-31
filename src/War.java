@@ -9,15 +9,16 @@ public class War {
 
     /**
      * Creates a deck using numbers for rank and symbols for suit
+     *
      * @return an array list of size 52, the whole deck.
      */
-    public ArrayList<String> makeDeck(){
+    public ArrayList<String> makeDeck() {
         String[] ranks = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "A", "J", "K", "Q"};
         String[] suits = {"♡", "♤", "☘", "⟡"};
         ArrayList<String> deck = new ArrayList<>();
-        for ( String rank : ranks){
-            for ( String suit : suits){
-                deck.add(rank+suit);
+        for (String rank : ranks) {
+            for (String suit : suits) {
+                deck.add(rank + suit);
             }
         }
         shuffle(deck);
@@ -26,6 +27,7 @@ public class War {
 
     /**
      * Checks if a card has a double digit rank, then returns an ASCII version of the card using proper spacing
+     *
      * @param card A string with two characters, rank and suit.
      */
     public String printCard(String card) {
@@ -49,19 +51,20 @@ public class War {
 
     /**
      * Splits a deck in half to create a hand for a player or cpu. For a player, uses the front half. For a cpu, the back
-     * @param deck Array of 52 cards, splits them up among the players
+     *
+     * @param deck  Array of 52 cards, splits them up among the players
      * @param human Boolean, decides which half of the deck to use
      * @return returns the finished hand, an array list of 26 cards.
      */
-    public ArrayList<String> makeHand(ArrayList<String> deck, boolean human){
+    public ArrayList<String> makeHand(ArrayList<String> deck, boolean human) {
         ArrayList<String> hand = new ArrayList<>();
         int dealer = 0;
-        if (human){
-            for (int i=0; i<=25; i++){
+        if (human) {
+            for (int i = 0; i <= 25; i++) {
                 hand.add(deck.get(i));
             }
-        } else{
-            for (int i=26; i<=51; i++){
+        } else {
+            for (int i = 26; i <= 51; i++) {
                 hand.add(deck.get(i));
             }
         }
@@ -70,13 +73,14 @@ public class War {
 
     /**
      * Gets an integer representation of the rank of a card
+     *
      * @param card 2-3 character string with a value and a rank
      * @return the determined value of the card after manipulating it into an integer.
      */
-    public int getValue(String card){
-        if (card.length() == 2){
+    public int getValue(String card) {
+        if (card.length() == 2) {
             //checks first if the card has a letter rank and assigns the appropriate value
-            switch (card.charAt(0)){
+            switch (card.charAt(0)) {
                 case 'J':
                     return 11;
                 case 'Q':
@@ -89,9 +93,9 @@ public class War {
                     //If it had a numerical value, gets a string version of the 0th character, then converts it to an int
                     return Integer.parseInt(String.valueOf(card.charAt(0)));
             }
-        } else{
+        } else {
             //if the rank is double digits, creates a double digit string and then converts
-            return Integer.parseInt(String.valueOf(card.charAt(0)+card.charAt(1)));
+            return Integer.parseInt(String.valueOf(card.charAt(0) + card.charAt(1)));
         }
     }
 
@@ -99,18 +103,19 @@ public class War {
     /**
      * Checks which card out of two is worth more, prints the results, and returns a char that the program will use
      * to determine how to move on.
+     *
      * @param pCard The player's card.
      * @param cCard The CPU's card.
      * @return Char, used to proceed.
      */
-    public char winLose(String pCard, String cCard){
+    public char winLose(String pCard, String cCard) {
         System.out.printf("""
-                    Your card:
-                    %s
-                    Opponent's card:
-                    %s
-                    """, printCard(pCard), printCard(cCard));
-        if (getValue(pCard) > getValue(cCard)){
+                Your card:
+                %s
+                Opponent's card:
+                %s
+                """, printCard(pCard), printCard(cCard));
+        if (getValue(pCard) > getValue(cCard)) {
             IO.println("Your card wins! You have taken your opponent's card and put it at the bottom of your deck");
             return 'w';
         } else if (getValue(pCard) < getValue(cCard)) {
@@ -124,6 +129,7 @@ public class War {
     /**
      * Acts as the main function that checks where the player or the cpu wins a match. If there is a tie, informs
      * the player and loops until the tie is broken
+     *
      * @param pHand an array list of player cards
      * @param cHand an array list of cpu cards
      * @return an array containing two string arrays. The first is used to make the player's new hand, the second is
@@ -154,15 +160,15 @@ public class War {
                 tied = false;
                 /*In the case of a tie, loops over again. Adds one to attempt, which lets the program know what cards
                 to check (for example, if attempt=2, then check the third card)*/
-            } else{
+            } else {
                 IO.println("""
-                                A tie? This means War! Let's check you and your opponents' next cards and see who wins!
-                                press C to continue.
-                                """);
+                        A tie? This means War! Let's check you and your opponents' next cards and see who wins!
+                        press C to continue.
+                        """);
                 String confirm = IO.readln();
                 if (confirm.equals("q") || confirm.equals("Q")) {
                     checkExit();
-                } else{
+                } else {
                     IO.println("Oops! Please enter 'c' to continue or 'q' to quit");
                 }
                 attempt += 1;
@@ -184,9 +190,16 @@ public class War {
                 Welcome to War! You'll be playing against a CPU. during each turn and after you read this text, enter C
                  to continue. If you want to quit at any time, you can do so by entering Q.
                 """);
-        ArrayList<String> deck = makeDeck();
-        ArrayList<String> playerHand = makeHand(deck, true);
-        ArrayList<String> cpuHand = makeHand(deck, false);
+        //creating a deck and subsequent hands for each player
+        //ArrayList<String> deck = makeDeck();
+        //ArrayList<String> playerHand = makeHand(deck, true);
+        //ArrayList<String> cpuHand = makeHand(deck, false);
+
+
+        ArrayList<String> playerHand = new ArrayList<>();
+        playerHand.add("10A");
+        ArrayList<String> cpuHand = new  ArrayList<>();
+        cpuHand.add("1A");
 
         while (keepPlaying) {
             String confirm = IO.readln();
@@ -195,24 +208,48 @@ public class War {
                 playerHand = newHands.get(0);
                 cpuHand = newHands.get(1);
 
-            } else if  (confirm.equals("q") || confirm.equals("Q")) {
-                checkExit();
-            } else{
+            } else if (confirm.equals("q") || confirm.equals("Q")) {
+                earlyQuit();
+            } else {
                 IO.println("Oops! Please enter 'c' to continue or 'q' to quit");
+            }
+            //If either player runs out of cards, lets the user know and has them exit
+            if (playerHand.isEmpty()) {
+                IO.println("You've run out of cards! Better luck next time! Press any key to exit.");
+                IO.readln();
+                keepPlaying = false;
+            } else if (cpuHand.isEmpty()) {
+                IO.println("Your opponent is out of cards, you win! here's your final hand, and you can press any key to continue.");
+                IO.println(playerHand);
+                IO.readln();
+                keepPlaying = false;
             }
         }
     }
 
+
+
+    //checkExit and earlyQuit both currently have bugs. Will fix!
     /**
      * Confirms whether the player wants to stop playing. Why would you want to quit such an enthralling game?
      */
     public void checkExit() {
+        IO.println("Would you like to play another game? Enter C to continue or Q to quit.");
+        String confirm = IO.readln();
+        if (confirm.equals("q") || confirm.equals("Q")) {
+            keepPlaying = false;
+        } else if (confirm.equals("c") || confirm.equals("C")) {
+            IO.println("Great! We'll play another game:\n");
+            keepPlaying = true;
+        }
+    }
+    public void earlyQuit() {
         IO.println("Are you sure you want to quit? Press C to continue or Q to quit");
         String confirm = IO.readln();
         if (confirm.equals("q") || confirm.equals("Q")) {
             keepPlaying = false;
         } else if (confirm.equals("c") || confirm.equals("C")) {
-            IO.println("Great! Enter C again to continue the game");
+            IO.println("Great! We'll play another game:\n");
         } else {
             IO.println("Oops! Please enter 'c' to continue or 'q' to quit");
         }
