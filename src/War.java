@@ -151,7 +151,6 @@ public class War {
             } else{
                 IO.println("Oops! Please enter 'c' to continue or 'q' to quit");
             }
-            if(playerHand.isEmpty());
         }
     }
 
