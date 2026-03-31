@@ -97,13 +97,13 @@ public class War {
 
 
     /**
-     * Checks which card out of two is worth more, prints the results, and returns a boolean that the program will use
-     * to move loser's the card to the other player's deck. Will be updated for ties.
+     * Checks which card out of two is worth more, prints the results, and returns a char that the program will use
+     * to determine how to move on.
      * @param pCard The player's card.
      * @param cCard The CPU's card.
-     * @return Boolean, used to proceed.
+     * @return Char, used to proceed.
      */
-    public boolean winLose(String pCard, String cCard){
+    public char winLose(String pCard, String cCard){
         System.out.printf("""
                     Your card:
                     %s
@@ -112,11 +112,66 @@ public class War {
                     """, printCard(pCard), printCard(cCard));
         if (getValue(pCard) > getValue(cCard)){
             IO.println("Your card wins! You have taken your opponent's card and put it at the bottom of your deck");
-            return true;
-        } else{
+            return 'w';
+        } else if (getValue(pCard) < getValue(cCard)) {
             IO.println("Your card loses! Your opponent has taken your card and put it at the bottom of their deck.");
-            return false;
+            return 'l';
+        } else {
+            return 't';
         }
+    }
+
+    /**
+     * Acts as the main function that checks where the player or the cpu wins a match. If there is a tie, informs
+     * the player and loops until the tie is broken
+     * @param pHand an array list of player cards
+     * @param cHand an array list of cpu cards
+     * @return an array containing two string arrays. The first is used to make the player's new hand, the second is
+     * used for the cpu's new hand
+     */
+    public ArrayList<ArrayList<String>> tieBreak(ArrayList<String> pHand, ArrayList<String> cHand) {
+        int attempt = 0;
+        boolean tied = true;
+        while (tied && keepPlaying) {
+            //uses winLose function to check for a player win, loss or a tie
+            char winner = winLose(pHand.get(attempt), cHand.get(attempt));
+            //for win and loss, the inner for loops ensure all cards from any previous ties get put at the bottom of the deck.
+            if (winner == 'w') {
+                for (int i = 0; i <= attempt; i++) {
+                    pHand.add(pHand.get(0));
+                    pHand.remove(0);
+                    pHand.add(cHand.get(0));
+                    cHand.remove(0);
+                }
+                tied = false;
+            } else if (winner == 'l') {
+                for (int i = 0; i <= attempt; i++) {
+                    cHand.add(cHand.get(0));
+                    cHand.remove(0);
+                    cHand.add(pHand.get(0));
+                    pHand.remove(0);
+                }
+                tied = false;
+                /*In the case of a tie, loops over again. Adds one to attempt, which lets the program know what cards
+                to check (for example, if attempt=2, then check the third card)*/
+            } else{
+                IO.println("""
+                                A tie? This means War! Let's check you and your opponents' next cards and see who wins!
+                                press C to continue.
+                                """);
+                String confirm = IO.readln();
+                if (confirm.equals("q") || confirm.equals("Q")) {
+                    checkExit();
+                } else{
+                    IO.println("Oops! Please enter 'c' to continue or 'q' to quit");
+                }
+                attempt += 1;
+            }
+        }
+        ArrayList<ArrayList<String>> newHands = new ArrayList<>();
+        newHands.add(pHand);
+        newHands.add(cHand);
+        return newHands;
     }
 
 
@@ -132,22 +187,16 @@ public class War {
         ArrayList<String> deck = makeDeck();
         ArrayList<String> playerHand = makeHand(deck, true);
         ArrayList<String> cpuHand = makeHand(deck, false);
+
         while (keepPlaying) {
             String confirm = IO.readln();
             if (confirm.equals("c") || confirm.equals("C")) {
-            if (winLose(playerHand.get(0), cpuHand.get(0))) {
-                playerHand.add(playerHand.get(0));
-                playerHand.remove(0);
-                playerHand.add(cpuHand.get(0));
-                cpuHand.remove(0);
-            } else {
-                cpuHand.add(cpuHand.get(0));
-                cpuHand.remove(0);
-                cpuHand.add(playerHand.get(0));
-                playerHand.remove(0);
-            }
+                ArrayList<ArrayList<String>> newHands = (tieBreak(playerHand, cpuHand));
+                playerHand = newHands.get(0);
+                cpuHand = newHands.get(1);
+
             } else if  (confirm.equals("q") || confirm.equals("Q")) {
-                keepPlaying = false;
+                checkExit();
             } else{
                 IO.println("Oops! Please enter 'c' to continue or 'q' to quit");
             }
@@ -155,11 +204,17 @@ public class War {
     }
 
     /**
-     * Asks the player if they want to exit or keep playing
-     * If they want to exit - change keepPlaying flag (variable) to false.
-     * For now just changes flog so this can exit
+     * Confirms whether the player wants to stop playing. Why would you want to quit such an enthralling game?
      */
     public void checkExit() {
-        keepPlaying = false;
+        IO.println("Are you sure you want to quit? Press C to continue or Q to quit");
+        String confirm = IO.readln();
+        if (confirm.equals("q") || confirm.equals("Q")) {
+            keepPlaying = false;
+        } else if (confirm.equals("c") || confirm.equals("C")) {
+            IO.println("Great! Enter C again to continue the game");
+        } else {
+            IO.println("Oops! Please enter 'c' to continue or 'q' to quit");
+        }
     }
 }
