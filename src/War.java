@@ -132,8 +132,29 @@ public class War {
         ArrayList<String> deck = makeDeck();
         ArrayList<String> playerHand = makeHand(deck, true);
         ArrayList<String> cpuHand = makeHand(deck, false);
-
+        while (keepPlaying) {
+            String confirm = IO.readln();
+            if (confirm.equals("c") || confirm.equals("C")) {
+            if (winLose(playerHand.get(0), cpuHand.get(0))) {
+                playerHand.add(playerHand.get(0));
+                playerHand.remove(0);
+                playerHand.add(cpuHand.get(0));
+                cpuHand.remove(0);
+            } else {
+                cpuHand.add(cpuHand.get(0));
+                cpuHand.remove(0);
+                cpuHand.add(playerHand.get(0));
+                playerHand.remove(0);
+            }
+            } else if  (confirm.equals("q") || confirm.equals("Q")) {
+                keepPlaying = false;
+            } else{
+                IO.println("Oops! Please enter 'c' to continue or 'q' to quit");
+            }
+            if(playerHand.isEmpty());
+        }
     }
+
 
     /**
      * Asks the player if they want to exit or keep playing
