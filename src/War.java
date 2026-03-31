@@ -154,7 +154,6 @@ public class War {
         }
     }
 
-
     /**
      * Asks the player if they want to exit or keep playing
      * If they want to exit - change keepPlaying flag (variable) to false.
