@@ -8,9 +8,9 @@ public class War {
 
 
     /**
-     * Creates a deck using numbers for rank and symbols for suit
+     * Creates a deck using numbers for rank and symbols for suit. Randomizes order using shuffle.
      *
-     * @return an array list of size 52, the whole deck.
+     * @return an array list of size 52, the whole deck after being shuffled.
      */
     public ArrayList<String> makeDeck() {
         String[] ranks = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "A", "J", "K", "Q"};
@@ -29,6 +29,7 @@ public class War {
      * Checks if a card has a double digit rank, then returns an ASCII version of the card using proper spacing
      *
      * @param card A string with two characters, rank and suit.
+     * @return A string constructed to look like a card.
      */
     public String printCard(String card) {
         if (card.length() == 2) {
@@ -50,10 +51,10 @@ public class War {
     }
 
     /**
-     * Splits a deck in half to create a hand for a player or cpu. For a player, uses the front half. For a cpu, the back
+     * Splits a deck in half to create a hand for a player or cpu. For a player, uses the front half. For a cpu, the back.
      *
-     * @param deck  Array of 52 cards, splits them up among the players
-     * @param human Boolean, decides which half of the deck to use
+     * @param deck  Array of 52 cards, splits them up among the players.
+     * @param human Boolean, decides which half of the deck to use.
      * @return returns the finished hand, an array list of 26 cards.
      */
     public ArrayList<String> makeHand(ArrayList<String> deck, boolean human) {
@@ -104,9 +105,9 @@ public class War {
      * Checks which card out of two is worth more, prints the results, and returns a char that the program will use
      * to determine how to move on.
      *
-     * @param pCard The player's card.
-     * @param cCard The CPU's card.
-     * @return Char, used to proceed.
+     * @param pCard The player's card, a 2-3 character string.
+     * @param cCard The CPU's card, a 2-3 character string.
+     * @return Character, used by other functions to determine a win, loss or tie.
      */
     public char winLose(String pCard, String cCard) {
         System.out.printf("""
@@ -127,7 +128,7 @@ public class War {
     }
 
     /**
-     * Acts as the main function that checks where the player or the cpu wins a match. If there is a tie, informs
+     * Acts as the main function that checks whether the player or the cpu wins a match. If there is a tie, informs
      * the player and loops until the tie is broken
      *
      * @param pHand an array list of player cards
@@ -166,6 +167,7 @@ public class War {
                         press C to continue.
                         """);
                 String confirm = IO.readln();
+                //User can still choose to quit during a tie
                 if (confirm.equals("q") || confirm.equals("Q")) {
                    keepPlaying = false;
                 } else {
@@ -182,8 +184,9 @@ public class War {
 
 
     /**
-     * Runs the main game loop - calling other functions as needed.
-     * You will create this as for now it just prints out - TBD.
+     * Runs the main game loop. First, creates a deck, a player hand and a cpu hand. Then, loops through the war game.
+     * User presses c to continue each turn, and can quit any time with q. The while loops exits when either hand is
+     * empty.
      */
     public void run() {
         IO.println("""
@@ -198,6 +201,7 @@ public class War {
         while (keepPlaying) {
             String confirm = IO.readln();
             if (confirm.equals("c") || confirm.equals("C")) {
+                //newHands is an array of two string arrays. The first is the player's, the second is the cpu's.
                 ArrayList<ArrayList<String>> newHands = (tieBreak(playerHand, cpuHand));
                 playerHand = newHands.get(0);
                 cpuHand = newHands.get(1);
