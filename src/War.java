@@ -58,7 +58,6 @@ public class War {
      */
     public ArrayList<String> makeHand(ArrayList<String> deck, boolean human) {
         ArrayList<String> hand = new ArrayList<>();
-        int dealer = 0;
         if (human) {
             for (int i = 0; i <= 25; i++) {
                 hand.add(deck.get(i));
@@ -94,8 +93,9 @@ public class War {
                     return Integer.parseInt(String.valueOf(card.charAt(0)));
             }
         } else {
-            //if the rank is double digits, creates a double digit string and then converts
-            return Integer.parseInt(String.valueOf(card.charAt(0) + card.charAt(1)));
+            //If the rank is double digits, fetches the two string values and parses them into an int.
+            //Have to use string.valueof for concatenation. If we don't, the chars get added wrong.
+            return Integer.parseInt(String.valueOf(card.charAt(0)) + String.valueOf(card.charAt(1)));
         }
     }
 
@@ -167,7 +167,7 @@ public class War {
                         """);
                 String confirm = IO.readln();
                 if (confirm.equals("q") || confirm.equals("Q")) {
-                    checkExit();
+                   keepPlaying = false;
                 } else {
                     IO.println("Oops! Please enter 'c' to continue or 'q' to quit");
                 }
@@ -191,15 +191,9 @@ public class War {
                  to continue. If you want to quit at any time, you can do so by entering Q.
                 """);
         //creating a deck and subsequent hands for each player
-        //ArrayList<String> deck = makeDeck();
-        //ArrayList<String> playerHand = makeHand(deck, true);
-        //ArrayList<String> cpuHand = makeHand(deck, false);
-
-
-        ArrayList<String> playerHand = new ArrayList<>();
-        playerHand.add("10A");
-        ArrayList<String> cpuHand = new  ArrayList<>();
-        cpuHand.add("1A");
+        ArrayList<String> deck = makeDeck();
+        ArrayList<String> playerHand = makeHand(deck, true);
+        ArrayList<String> cpuHand = makeHand(deck, false);
 
         while (keepPlaying) {
             String confirm = IO.readln();
@@ -209,7 +203,7 @@ public class War {
                 cpuHand = newHands.get(1);
 
             } else if (confirm.equals("q") || confirm.equals("Q")) {
-                earlyQuit();
+                keepPlaying = false;
             } else {
                 IO.println("Oops! Please enter 'c' to continue or 'q' to quit");
             }
@@ -229,29 +223,18 @@ public class War {
 
 
 
-    //checkExit and earlyQuit both currently have bugs. Will fix!
+
     /**
      * Confirms whether the player wants to stop playing. Why would you want to quit such an enthralling game?
      */
     public void checkExit() {
-        IO.println("Would you like to play another game? Enter C to continue or Q to quit.");
+        IO.println("Would you like to start over? Enter C to continue or Q to quit.");
         String confirm = IO.readln();
         if (confirm.equals("q") || confirm.equals("Q")) {
             keepPlaying = false;
         } else if (confirm.equals("c") || confirm.equals("C")) {
             IO.println("Great! We'll play another game:\n");
             keepPlaying = true;
-        }
-    }
-    public void earlyQuit() {
-        IO.println("Are you sure you want to quit? Press C to continue or Q to quit");
-        String confirm = IO.readln();
-        if (confirm.equals("q") || confirm.equals("Q")) {
-            keepPlaying = false;
-        } else if (confirm.equals("c") || confirm.equals("C")) {
-            IO.println("Great! We'll play another game:\n");
-        } else {
-            IO.println("Oops! Please enter 'c' to continue or 'q' to quit");
         }
     }
 }
