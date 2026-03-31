@@ -53,28 +53,11 @@ public class BlackJack {
         }
     }
 
-
-    /**
-     * Splits a deck in half to create a hand for a player or cpu. For a player, uses the front half. For a cpu, the back.
-     *
-     * @param deck  Array of 52 cards, splits them up among the players.
-     * @param human Boolean, decides which half of the deck to use.
-     * @return returns the finished hand, an array list of 26 cards.
-     */
-    public ArrayList<String> makeHand(ArrayList<String> deck, boolean human) {
-        ArrayList<String> hand = new ArrayList<>();
-        if (human) {
-            for (int i = 0; i <= 25; i++) {
-                hand.add(deck.get(i));
-            }
-        } else {
-            for (int i = 26; i <= 51; i++) {
-                hand.add(deck.get(i));
-            }
+    public void printHand(ArrayList<String> hand) {
+        for  (String card : hand) {
+            IO.println(printCard(card));
         }
-        return hand;
     }
-
 
 
 
@@ -89,14 +72,10 @@ public class BlackJack {
         if (card.length() == 2) {
             //checks first if the card has a letter rank and assigns the appropriate value
             switch (card.charAt(0)) {
-                case 'J':
-                    return 11;
-                case 'Q':
-                    return 12;
-                case 'K':
-                    return 13;
+                case 'J', 'Q', 'K':
+                    return 10;
                 case 'A':
-                    return 14;
+                    return 11;
                 default:
                     //If it had a numerical value, gets a string version of the 0th character, then converts it to an int
                     return Integer.parseInt(String.valueOf(card.charAt(0)));
@@ -118,6 +97,36 @@ public class BlackJack {
     }
 
 
+
+    public void hit(ArrayList<String> hand, ArrayList<String> deck) {
+        IO.readln("You have chosen to hit. Enter c to draw your next card.");
+        hand.add(deck.get(0));
+        deck.remove(0);
+        IO.println("Here is your new hand.");
+        printHand(hand);
+    }
+
+    public int getHandValue(ArrayList<String> hand) {
+        int totalValue = 0;
+        for (String card : hand) {
+            totalValue += getValue(card);
+        }
+        return totalValue;
+    }
+
+
+    public char hitOrStand() {
+        while (true) {
+            switch (IO.readln()){
+                case "h", "H":
+                    return 'h';
+                case "s", "S":
+                    return 's';
+                default:
+                    IO.println("Oops! Please enter H to hit or S to stand.");
+            }
+        }
+    }
 
 
     /**
@@ -141,18 +150,49 @@ public class BlackJack {
         IO.println("Here is the dealer's first card. He has two, but you cannot see the second.");
         draw(cpuHand, deck, 2);
         IO.println(printCard(cpuHand.get(0)) + printCard("??"));
-        String choice = IO.readln("Would you like to hit or stand? Enter H to hit or S to stand.");
+        IO.println("Would you like to hit or stand? Enter H to hit or S to stand.");
 
-        if (choice.equals("h")){
+        if (hitOrStand() == 'h') {
             boolean notSatisfied = true;
             while (notSatisfied) {
-                IO.readln("You have chosen to hit. Enter c to draw your next card.");
-                playerHand.add(deck.get(0));
-                deck.remove(0);
+                hit(playerHand, deck);
+                if  (getHandValue(playerHand) > 21) {
+                    IO.readln("Your cards total more than 21, a bust! Better luck next time. Press any key to continue");
+                    notSatisfied = false;
+                    keepPlaying = false;
+                } else {
+                    IO.println("Your hand is still lower than or equal to 21. Would you like to hit again? Enter H to hit or S to stand.");
 
+                    if (hitOrStand() == 'h') {
+                        notSatisfied = true;
+                    } else {
+                        notSatisfied = false;
+                    }
+                }
             }
 
+        } else {
+            IO.println("You are satisfied with your hand. The dealer will now reveal his full hand:");
+            printHand(cpuHand);
+            if (getHandValue(cpuHand) < 17) {
+                while (getHandValue(cpuHand) < 17) {
+                    draw(cpuHand, deck, 1);
+                }
+                IO.readln("""
+                                 The dealer's hand is worth less than 17. The dealer is obligated to draw until his hand is worth 17 or more
+                                 Press any key to continue""");
+                IO.println("The dealer has drawn his cards. Here is his new hand:");
+                printHand(cpuHand);
+                if (getHandValue(cpuHand) > 21) {
+                    System.out.printf("With a value of %s, the dealer has a bust! You win!", getHandValue(cpuHand));
+                }
+                if (getHandValue(playerHand) > getHandValue(cpuHand)) {
+                    System.out.printf("With a hand value of %s, you have beaten the dealer! Congratulations!", getHandValue(playerHand));
+                } else {
+                    System.out.printf("With a hand value of %s, the dealer wins! Better luck next time!");
+                }
 
+            }
 
         }
 
