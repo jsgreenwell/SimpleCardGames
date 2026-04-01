@@ -15,6 +15,7 @@ public class Main {
                         3: Word Scamble
                         4: Tic Tac Toe
                         5: Wheel of Fortune
+                        6: Black Jack
                         9: Exit
                     Enter the number of your selection:
                     """);

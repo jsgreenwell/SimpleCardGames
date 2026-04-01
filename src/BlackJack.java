@@ -1,5 +1,8 @@
 //This class currently borrows a LOT of functions from War. I might make a generic "card" class later on to reduce bloat.
 
+//Need to specify "any key" in several places instead of just C
+//Need to add an option to quit while selecting whether you want to hit or stand
+
 import java.util.ArrayList;
 
 import static java.util.Collections.shuffle;
@@ -88,7 +91,12 @@ public class BlackJack {
     }
 
 
-
+    /**
+     * Adds the first card in a deck to a hand, then removes that element from the deck. Can do this multiple times.
+     * @param hand An array list of strings, will have a new card put into it.
+     * @param deck An array list of strings, will have a card taken out of it.
+     * @param times An integer, the number of times we want to draw.
+     */
     public void draw(ArrayList<String> hand, ArrayList<String> deck, int times){
         for (int i=1; i<=times; i++) {
             hand.add(deck.get(0));
@@ -97,15 +105,24 @@ public class BlackJack {
     }
 
 
-
+    /**
+     *  Slightly modified draw function. Only draws once and prints some text explaining what is happening to the user.
+     * @param hand An array of strings, will have a new card put into it.
+     * @param deck An array of strings, will have a card removed from it.
+     */
     public void hit(ArrayList<String> hand, ArrayList<String> deck) {
         IO.readln("You have chosen to hit. Enter c to draw your next card.");
-        hand.add(deck.get(0));
-        deck.remove(0);
+        draw(hand, deck, 1);
         IO.println("Here is your new hand.");
         printHand(hand);
     }
 
+
+    /**
+     * Counts up the cards in a hand and returns the total value.
+     * @param hand An array of strings to be evaluated.
+     * @return An integer containing the total value.
+     */
     public int getHandValue(ArrayList<String> hand) {
         int totalValue = 0;
         for (String card : hand) {
@@ -115,6 +132,10 @@ public class BlackJack {
     }
 
 
+    /**
+     * A simple choice evaluation function. Demands the user enter h or s.
+     * @return A character representing the user's choice
+     */
     public char hitOrStand() {
         while (true) {
             switch (IO.readln()){
@@ -171,7 +192,8 @@ public class BlackJack {
                 }
             }
 
-        } else {
+        }
+        if (keepPlaying) {
             IO.println("You are satisfied with your hand. The dealer will now reveal his full hand:");
             printHand(cpuHand);
             if (getHandValue(cpuHand) < 17) {
@@ -179,22 +201,22 @@ public class BlackJack {
                     draw(cpuHand, deck, 1);
                 }
                 IO.readln("""
-                                 The dealer's hand is worth less than 17. The dealer is obligated to draw until his hand is worth 17 or more
-                                 Press any key to continue""");
+                        The dealer's hand is worth less than 17. The dealer is obligated to draw until his hand is worth 17 or more
+                        Press any key to continue""");
                 IO.println("The dealer has drawn his cards. Here is his new hand:");
                 printHand(cpuHand);
-                if (getHandValue(cpuHand) > 21) {
-                    System.out.printf("With a value of %s, the dealer has a bust! You win!", getHandValue(cpuHand));
-                }
-                if (getHandValue(playerHand) > getHandValue(cpuHand)) {
-                    System.out.printf("With a hand value of %s, you have beaten the dealer! Congratulations!", getHandValue(playerHand));
-                } else {
-                    System.out.printf("With a hand value of %s, the dealer wins! Better luck next time!");
-                }
-
+            }
+            if (getHandValue(cpuHand) > 21) {
+                System.out.printf("With a value of %s, the dealer has a bust! You win!\n", getHandValue(cpuHand));
+            } else if (getHandValue(playerHand) > getHandValue(cpuHand)) {
+                System.out.printf("With a hand value of %s, you have beaten the dealer! Congratulations!\n", getHandValue(playerHand));
+            } else {
+                System.out.printf("With a hand value of %s, the dealer wins! Better luck next time!\n", getHandValue(cpuHand));
             }
 
+
         }
+
 
     }
 
