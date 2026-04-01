@@ -1,7 +1,7 @@
 //This class currently borrows a LOT of functions from War. I might make a generic "card" class later on to reduce bloat.
 
-//Need to specify "any key" in several places instead of just C
-//Need to add an option to quit while selecting whether you want to hit or stand
+
+//Need to add comments to run(), checkBust() and dealerReveal()
 
 import java.util.ArrayList;
 
@@ -111,7 +111,7 @@ public class BlackJack {
      * @param deck An array of strings, will have a card removed from it.
      */
     public void hit(ArrayList<String> hand, ArrayList<String> deck) {
-        IO.readln("You have chosen to hit. Enter c to draw your next card.");
+        IO.readln("You have chosen to hit. Enter any key to continue.");
         draw(hand, deck, 1);
         IO.println("Here is your new hand.");
         printHand(hand);
@@ -133,7 +133,7 @@ public class BlackJack {
 
 
     /**
-     * A simple choice evaluation function. Demands the user enter h or s.
+     * A simple choice evaluation function. Demands the user enter h or s, or q to quit.
      * @return A character representing the user's choice
      */
     public char hitOrStand() {
@@ -143,6 +143,8 @@ public class BlackJack {
                     return 'h';
                 case "s", "S":
                     return 's';
+                case "q", "Q":
+                    return 'q';
                 default:
                     IO.println("Oops! Please enter H to hit or S to stand.");
             }
@@ -151,8 +153,79 @@ public class BlackJack {
 
 
     /**
-     * Runs the main game loop - calling other functions as needed.
-     * You will create this as for now it just prints out - TBD.
+     * This function acts as the first half of the main game logic. It allows players to choose whether to hit, stand or
+     * quit. It also evaluated the value of a player's hand to check if they have a bust and will automatically end the
+     * game. If the player's hand is still less than 21 after the first hit, enters a loop that lets them hit as many
+     * times as they like.
+     * @param hand An array of strings, the player's current cards.
+     * @param deck An array of strings, the cards not taken by the player or dealer.
+     */
+    public void checkBust(ArrayList<String> hand, ArrayList<String> deck) {
+        IO.println("Would you like to hit or stand? Enter H to hit or S to stand. If you would like to quit, press Q.");
+        char choice = hitOrStand();
+        if (choice == 'q' ||  choice == 'Q') {
+            keepPlaying = false;
+        }
+        if (choice == 'h' || choice == 'H') {
+            boolean notSatisfied = true;
+            while (notSatisfied) {
+                hit(hand, deck);
+                if  (getHandValue(hand) > 21) {
+                    IO.readln("Your cards total more than 21, a bust! Better luck next time. Press any key to continue");
+                    notSatisfied = false;
+                    keepPlaying = false;
+                } else {
+                    IO.println("Your hand is still lower than or equal to 21. Would you like to hit again? Enter H to hit or S to stand.");
+                    choice = hitOrStand();
+                    if (choice == 'h' || choice == 'H') {
+                        notSatisfied = true;
+                    } else if (choice == 's' || choice == 'S') {
+                        notSatisfied = false;
+                    } else {
+                        keepPlaying = false;
+                    }
+                }
+            }
+
+        }
+    }
+
+    /**
+     * This function acts as the second half of the main game logic, occurring after checkBust has finished (if the player
+     * did not decide to quit). Reveals the dealer's full hand and, if their hand is less than 17, loops them into drawing
+     * cards until the value is at least 17. Checks if the dealer has a bust (an automatic win for the player), and if
+     * they don't, compares the values of the player and dealer's hands, printing out a matching message.
+     * @param pHand An array of strings, the player's current hand.
+     * @param cHand An array of strings, the cpu's current hand.
+     * @param deck An array of strings, the deck that the dealer can draw from.
+     */
+    public void dealerReveal(ArrayList<String> pHand, ArrayList<String> cHand, ArrayList<String> deck) {
+        IO.println("You are satisfied with your hand. The dealer will now reveal his full hand:");
+        printHand(cHand);
+        if (getHandValue(cHand) < 17) {
+            while (getHandValue(cHand) < 17) {
+                draw(cHand, deck, 1);
+            }
+            IO.readln("""
+                        The dealer's hand is worth less than 17. The dealer is obligated to draw until his hand is worth 17 or more
+                        Enter any key to continue""");
+            IO.println("The dealer has drawn his cards. Here is his new hand:");
+            printHand(cHand);
+        }
+        if (getHandValue(cHand) > 21) {
+            System.out.printf("With a value of %s, the dealer has a bust! You win!\n", getHandValue(cHand));
+        } else if (getHandValue(pHand) > getHandValue(cHand)) {
+            System.out.printf("With a hand value of %s, you have beaten the dealer! Congratulations!\n", getHandValue(pHand));
+        } else {
+            System.out.printf("With a hand value of %s, the dealer wins! Better luck next time!\n", getHandValue(cHand));
+        }
+    }
+
+
+
+
+    /**
+     * Sets up the black jack game by creating a deck and hands, then calls for the other two logical functions.
      */
     public void run() {
         IO.println("""
@@ -166,72 +239,34 @@ public class BlackJack {
         IO.println("Here are your first two cards:");
         draw(playerHand, deck, 2);
         IO.println(printCard(playerHand.get(0)) + printCard(playerHand.get(1)));
-        IO.readln("Press c to continue");
+        IO.readln("Enter any key to continue");
 
         IO.println("Here is the dealer's first card. He has two, but you cannot see the second.");
         draw(cpuHand, deck, 2);
         IO.println(printCard(cpuHand.get(0)) + printCard("??"));
-        IO.println("Would you like to hit or stand? Enter H to hit or S to stand.");
 
-        if (hitOrStand() == 'h') {
-            boolean notSatisfied = true;
-            while (notSatisfied) {
-                hit(playerHand, deck);
-                if  (getHandValue(playerHand) > 21) {
-                    IO.readln("Your cards total more than 21, a bust! Better luck next time. Press any key to continue");
-                    notSatisfied = false;
-                    keepPlaying = false;
-                } else {
-                    IO.println("Your hand is still lower than or equal to 21. Would you like to hit again? Enter H to hit or S to stand.");
+        checkBust(playerHand, deck);
 
-                    if (hitOrStand() == 'h') {
-                        notSatisfied = true;
-                    } else {
-                        notSatisfied = false;
-                    }
-                }
-            }
-
-        }
         if (keepPlaying) {
-            IO.println("You are satisfied with your hand. The dealer will now reveal his full hand:");
-            printHand(cpuHand);
-            if (getHandValue(cpuHand) < 17) {
-                while (getHandValue(cpuHand) < 17) {
-                    draw(cpuHand, deck, 1);
-                }
-                IO.readln("""
-                        The dealer's hand is worth less than 17. The dealer is obligated to draw until his hand is worth 17 or more
-                        Press any key to continue""");
-                IO.println("The dealer has drawn his cards. Here is his new hand:");
-                printHand(cpuHand);
-            }
-            if (getHandValue(cpuHand) > 21) {
-                System.out.printf("With a value of %s, the dealer has a bust! You win!\n", getHandValue(cpuHand));
-            } else if (getHandValue(playerHand) > getHandValue(cpuHand)) {
-                System.out.printf("With a hand value of %s, you have beaten the dealer! Congratulations!\n", getHandValue(playerHand));
-            } else {
-                System.out.printf("With a hand value of %s, the dealer wins! Better luck next time!\n", getHandValue(cpuHand));
-            }
-
-
+            dealerReveal(playerHand, cpuHand, deck);
         }
-
-
     }
 
 
 
 
     /**
-     * Confirms whether the player wants to stop playing. Why would you want to quit such an enthralling game?
+     * Confirms whether the player wants to stop playing. Forces them to enter either C or Q.
      */
     public void checkExit() {
         IO.println("Would you like to start over? Enter C to continue or Q to quit.");
         String confirm = IO.readln();
+        while (!confirm.equals("c") && !confirm.equals("Q") && !confirm.equals("C") && !confirm.equals("q")) {
+            confirm = IO.readln("Whoops! Press C to play another game or Q to quit.");
+        }
         if (confirm.equals("q") || confirm.equals("Q")) {
             keepPlaying = false;
-        } else if (confirm.equals("c") || confirm.equals("C")) {
+        } else {
             IO.println("Great! We'll play another game:\n");
             keepPlaying = true;
         }

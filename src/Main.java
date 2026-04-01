@@ -66,10 +66,11 @@ public class Main {
                     break;
                 case 6:
                     BlackJack blackjack = new BlackJack();
-                    while(blackjack.keepPlaying) {
+                    while (blackjack.keepPlaying) {
                         blackjack.run();
                         blackjack.checkExit();
                 }
+                    break;
                 default:
                     System.out.println("Thanks for playing!\nGoodbye!");
                     choice = 9; // set to exit

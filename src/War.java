@@ -234,11 +234,15 @@ public class War {
     public void checkExit() {
         IO.println("Would you like to start over? Enter C to continue or Q to quit.");
         String confirm = IO.readln();
+        while (!confirm.equals("c") && !confirm.equals("Q") && !confirm.equals("C") && !confirm.equals("q")) {
+            confirm = IO.readln("Whoops! Press C to play another game or Q to quit.");
+        }
         if (confirm.equals("q") || confirm.equals("Q")) {
             keepPlaying = false;
-        } else if (confirm.equals("c") || confirm.equals("C")) {
+        } else {
             IO.println("Great! We'll play another game:\n");
             keepPlaying = true;
         }
     }
 }
+
