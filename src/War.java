@@ -205,6 +205,7 @@ public class War {
                 ArrayList<ArrayList<String>> newHands = (tieBreak(playerHand, cpuHand));
                 playerHand = newHands.get(0);
                 cpuHand = newHands.get(1);
+                System.out.printf("Here are the hand sizes after that round:\nYou: %s\nOpponent: %s", playerHand.size(), cpuHand.size());
 
             } else if (confirm.equals("q") || confirm.equals("Q")) {
                 keepPlaying = false;
