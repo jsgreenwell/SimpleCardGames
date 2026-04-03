@@ -216,8 +216,10 @@ public class BlackJack {
             System.out.printf("With a value of %s, the dealer has a bust! You win!\n", getHandValue(cHand));
         } else if (getHandValue(pHand) > getHandValue(cHand)) {
             System.out.printf("With a hand value of %s, you have beaten the dealer! Congratulations!\n", getHandValue(pHand));
-        } else {
+        } else if (getHandValue(pHand) < getHandValue(cHand)) {
             System.out.printf("With a hand value of %s, the dealer wins! Better luck next time!\n", getHandValue(cHand));
+        } else {
+            System.out.printf("With hands of %s, we have a draw! What are the odds?", getHandValue(pHand));
         }
     }
 
