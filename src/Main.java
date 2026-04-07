@@ -30,9 +30,9 @@ public class Main {
                     }
                     break;
                 case 1:
-                    War war = new War();
+                    CardGames war = new CardGames();
                     while (war.keepPlaying) {
-                        war.run();
+                        war.runWar();
                         war.checkExit();
                     }
                     break;
@@ -65,9 +65,9 @@ public class Main {
                     }
                     break;
                 case 6:
-                    BlackJack blackjack = new BlackJack();
+                    CardGames blackjack = new CardGames();
                     while (blackjack.keepPlaying) {
-                        blackjack.run();
+                        blackjack.runBlackjack();
                         blackjack.checkExit();
                 }
                     break;
