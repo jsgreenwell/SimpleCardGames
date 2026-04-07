@@ -71,12 +71,6 @@ public class Main {
                         blackjack.checkExit();
                     }
                     break;
-                case 7:
-                    Deck deck = new Deck();
-
-                    IO.println(deck);
-
-                    break;
                 default:
                     System.out.println("Thanks for playing!\nGoodbye!");
                     choice = 9; // set to exit
