@@ -69,7 +69,7 @@ public class Main {
                     while (blackjack.keepPlaying) {
                         blackjack.runBlackjack();
                         blackjack.checkExit();
-                }
+                    }
                     break;
                 case 7:
                     Deck deck = new Deck();

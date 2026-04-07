@@ -179,7 +179,7 @@ public class CardGames {
                 String confirm = IO.readln();
                 //User can still choose to quit during a tie
                 if (confirm.equals("q") || confirm.equals("Q")) {
-                   keepPlaying = false;
+                    keepPlaying = false;
                 } else {
                     IO.println("Oops! Please enter 'c' to continue or 'q' to quit");
                 }
