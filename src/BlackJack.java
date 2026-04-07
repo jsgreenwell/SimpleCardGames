@@ -1,8 +1,6 @@
 //This class currently borrows a LOT of functions from War. I might make a generic "card" class later on to reduce bloat.
 
 
-//Need to add comments to run(), checkBust() and dealerReveal()
-
 import java.util.ArrayList;
 
 import static java.util.Collections.shuffle;
@@ -12,50 +10,10 @@ public class BlackJack {
     public boolean keepPlaying = true;
 
 
-    /**
-     * Creates a deck using numbers for rank and symbols for suit. Randomizes order using shuffle.
-     *
-     * @return an array list of size 52, the whole deck after being shuffled.
-     */
-    public ArrayList<String> makeDeck() {
-        String[] ranks = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "A", "J", "K", "Q"};
-        String[] suits = {"♡", "♤", "☘", "⟡"};
-        ArrayList<String> deck = new ArrayList<>();
-        for (String rank : ranks) {
-            for (String suit : suits) {
-                deck.add(rank + suit);
-            }
-        }
-        shuffle(deck);
-        return deck;
-    }
 
 
-    /**
-     * Checks if a card has a double digit rank, then returns an ASCII version of the card using proper spacing
-     *
-     * @param card A string with two characters, rank and suit.
-     * @return A string constructed to look like a card.
-     */
-    public String printCard(String card) {
-        if (card.length() == 2) {
 
-            return String.format("""
-                    -------
-                    |  %s  |
-                    |  %s  |
-                    |_____|
-                    """, card.charAt(0), card.charAt(1));
-        } else {
-            return String.format("""
-                    -------
-                    |  %s%s |
-                    |  %s  |
-                    |_____|
-                    """, card.charAt(0), card.charAt(1), card.charAt(2));
-        }
-    }
-
+    //might not need to keep this
     public void printHand(ArrayList<String> hand) {
         for  (String card : hand) {
             IO.println(printCard(card));
@@ -66,40 +24,14 @@ public class BlackJack {
 
 
     /**
-     * Gets an integer representation of the rank of a card
-     *
-     * @param card 2-3 character string with a value and a rank
-     * @return the determined value of the card after manipulating it into an integer.
-     */
-    public int getValue(String card) {
-        if (card.length() == 2) {
-            //checks first if the card has a letter rank and assigns the appropriate value
-            switch (card.charAt(0)) {
-                case 'J', 'Q', 'K':
-                    return 10;
-                case 'A':
-                    return 11;
-                default:
-                    //If it had a numerical value, gets a string version of the 0th character, then converts it to an int
-                    return Integer.parseInt(String.valueOf(card.charAt(0)));
-            }
-        } else {
-            //If the rank is double digits, fetches the two string values and parses them into an int.
-            //Have to use string.valueof for concatenation. If we don't, the chars get added wrong.
-            return Integer.parseInt(String.valueOf(card.charAt(0)) + String.valueOf(card.charAt(1)));
-        }
-    }
-
-
-    /**
      * Adds the first card in a deck to a hand, then removes that element from the deck. Can do this multiple times.
      * @param hand An array list of strings, will have a new card put into it.
      * @param deck An array list of strings, will have a card taken out of it.
      * @param times An integer, the number of times we want to draw.
      */
-    public void draw(ArrayList<String> hand, ArrayList<String> deck, int times){
+    public void draw(ArrayList<String> hand, Deck deck, int times){
         for (int i=1; i<=times; i++) {
-            hand.add(deck.get(0));
+            hand.add(deck.cards.get(0));
             deck.remove(0);
         }
     }
@@ -110,7 +42,7 @@ public class BlackJack {
      * @param hand An array of strings, will have a new card put into it.
      * @param deck An array of strings, will have a card removed from it.
      */
-    public void hit(ArrayList<String> hand, ArrayList<String> deck) {
+    public void hit(ArrayList<String> hand, Deck deck) {
         IO.readln("You have chosen to hit. Enter any key to continue.");
         draw(hand, deck, 1);
         IO.println("Here is your new hand.");
@@ -234,9 +166,9 @@ public class BlackJack {
                 Welcome to Black Jack! You'll be playing against a CPU. Aces have a value of 11, and face cards have values of 10.
                 """);
         //creating a deck and subsequent hands for each player
-        ArrayList<String> deck = makeDeck();
-        ArrayList<String> playerHand = new ArrayList<>();
-        ArrayList<String> cpuHand = new ArrayList<>();
+        ArrayList<Deck> deck = new Deck();
+        ArrayList<Card> playerHand = new ArrayList<>();
+        ArrayList<Card> cpuHand = new ArrayList<>();
 
         IO.println("Here are your first two cards:");
         draw(playerHand, deck, 2);
