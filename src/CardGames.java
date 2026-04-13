@@ -7,6 +7,10 @@ public class CardGames {
     public boolean keepPlaying = true;
 
 
+
+
+
+
     //The methods in this section are standard and are used by both games
 
     /**
@@ -200,6 +204,12 @@ public class CardGames {
 
     //This marks the end of the CardGames functions. The following functions are used specifically for Blackjack.
 
+
+    /**
+     * Takes an array of strings that represents a hand and prints each one using the printCard command (so the result
+     * shows the ASCII version of each card).
+     * @param hand An array of strings, each representing a card.
+     */
     public void printHand(ArrayList<String> hand) {
         for  (String card : hand) {
             IO.println(printCard(card));
@@ -438,7 +448,7 @@ public class CardGames {
 
 
     /**
-     * Confirms whether the player wants to stop playing. Why would you want to quit such an enthralling game?
+     * Confirms whether the player wants to stop playing. User must enter c to restart or q to quit.
      */
     public void checkExit() {
         IO.println("Would you like to start over? Enter C to continue or Q to quit.");
