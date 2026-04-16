@@ -202,7 +202,7 @@ public class CardGames {
 
 
 
-    //This marks the end of the CardGames functions. The following functions are used specifically for Blackjack.
+    //This marks the end of the War functions. The following functions are used specifically for Blackjack.
 
 
     /**
