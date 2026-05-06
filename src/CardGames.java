@@ -32,7 +32,7 @@ public class CardGames {
     }
 
     /**
-     * Checks if a card has a double digit rank, then returns an ASCII version of the card using proper spacing
+     * Checks if a card has a double-digit rank, then returns an ASCII version of the card using proper spacing
      *
      * @param card A string with two characters, rank and suit.
      * @return A string constructed to look like a card.
@@ -105,9 +105,11 @@ public class CardGames {
             return Integer.parseInt(String.valueOf(card.charAt(0)) + String.valueOf(card.charAt(1)));
         }
     }
-
-
     //This marks the end of the standard methods. The following methods are used specifically for War.
+
+
+
+
 
 
 
@@ -148,7 +150,7 @@ public class CardGames {
      * @param pHand an array list of player cards
      * @param cHand an array list of cpu cards
      * @return an array containing two string arrays. The first is used to make the player's new hand, the second is
-     * used for the cpu's new hand
+     * used for the CPU's new hand
      */
     public ArrayList<ArrayList<String>> tieBreak(ArrayList<String> pHand, ArrayList<String> cHand) {
         int attempt = 0;
@@ -159,18 +161,18 @@ public class CardGames {
             //for win and loss, the inner for loops ensure all cards from any previous ties get put at the bottom of the deck.
             if (winner == 'w') {
                 for (int i = 0; i <= attempt; i++) {
-                    pHand.add(pHand.get(0));
-                    pHand.remove(0);
-                    pHand.add(cHand.get(0));
-                    cHand.remove(0);
+                    pHand.add(pHand.getFirst());
+                    pHand.removeFirst();
+                    pHand.add(cHand.getFirst());
+                    cHand.removeFirst();
                 }
                 tied = false;
             } else if (winner == 'l') {
                 for (int i = 0; i <= attempt; i++) {
-                    cHand.add(cHand.get(0));
-                    cHand.remove(0);
-                    cHand.add(pHand.get(0));
-                    pHand.remove(0);
+                    cHand.add(cHand.getFirst());
+                    cHand.removeFirst();
+                    cHand.add(pHand.getFirst());
+                    pHand.removeFirst();
                 }
                 tied = false;
                 /*In the case of a tie, loops over again. Adds one to attempt, which lets the program know what cards
@@ -195,14 +197,17 @@ public class CardGames {
         newHands.add(cHand);
         return newHands;
     }
-
-
-
-
-
-
-
     //This marks the end of the CardGames functions. The following functions are used specifically for Blackjack.
+
+
+
+
+
+
+
+
+
+
 
 
     /**
@@ -226,8 +231,8 @@ public class CardGames {
      */
     public void draw(ArrayList<String> hand, ArrayList<String> deck, int times){
         for (int i=1; i<=times; i++) {
-            hand.add(deck.get(0));
-            deck.remove(0);
+            hand.add(deck.getFirst());
+            deck.removeFirst();
         }
     }
 
@@ -330,7 +335,7 @@ public class CardGames {
      * cards until the value is at least 17. Checks if the dealer has a bust (an automatic win for the player), and if
      * they don't, compares the values of the player and dealer's hands, printing out a matching message.
      * @param pHand An array of strings, the player's current hand.
-     * @param cHand An array of strings, the cpu's current hand.
+     * @param cHand An array of strings, the CPU's current hand.
      * @param deck An array of strings, the deck that the dealer can draw from.
      */
     public void dealerReveal(ArrayList<String> pHand, ArrayList<String> cHand, ArrayList<String> deck) {
@@ -356,11 +361,12 @@ public class CardGames {
             System.out.printf("With hands of %s, we have a draw! What are the odds?", getHandValue(pHand));
         }
     }
-
-
-
     /* This marks the end of the Blackjack specific functions. The rest of the methods are the main game loops for CardGames
     and Blackjack */
+
+
+
+
 
 
 
@@ -388,7 +394,7 @@ public class CardGames {
         while (keepPlaying) {
             String confirm = IO.readln();
             if (confirm.equals("c") || confirm.equals("C")) {
-                //newHands is an array of two string arrays. The first is the player's, the second is the cpu's.
+                //newHands is an array of two string arrays. The first is the player's, the second is the CPU's.
                 ArrayList<ArrayList<String>> newHands = (tieBreak(playerHand, cpuHand));
                 playerHand = newHands.get(0);
                 cpuHand = newHands.get(1);
@@ -434,7 +440,7 @@ public class CardGames {
 
         IO.println("Here is the dealer's first card. He has two, but you cannot see the second.");
         draw(cpuHand, deck, 2);
-        IO.println(printCard(cpuHand.get(0)) + printCard("??"));
+        IO.println(printCard(cpuHand.getFirst()) + printCard("??"));
 
         checkBust(playerHand, deck);
 
@@ -453,10 +459,10 @@ public class CardGames {
     public void checkExit() {
         IO.println("Would you like to start over? Enter C to continue or Q to quit.");
         String confirm = IO.readln();
-        while (!confirm.equals("c") && !confirm.equals("Q") && !confirm.equals("C") && !confirm.equals("q")) {
+        while (!confirm.equalsIgnoreCase("c") && !confirm.equalsIgnoreCase("q")) {
             confirm = IO.readln("Whoops! Press C to play another game or Q to quit.");
         }
-        if (confirm.equals("q") || confirm.equals("Q")) {
+        if (confirm.equalsIgnoreCase("q")) {
             keepPlaying = false;
         } else {
             IO.println("Great! We'll play another game:\n");
