@@ -197,14 +197,7 @@ public class CardGames {
         newHands.add(cHand);
         return newHands;
     }
-
-
-
-
-
-
-
-    //This marks the end of the CardGames functions. The following functions are used specifically for Blackjack.
+    //This marks the end of the War functions. The following functions are used specifically for Blackjack.
 
 
 
