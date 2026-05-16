@@ -1,29 +1,40 @@
-public class RockPaperScissors {
-    // Boolean variable which is true until player wants to quit
-    public boolean keepPlaying = true;
+import java.util.Random;
+import java.util.Scanner;
 
-        int cMove;
-        int userMove = 0;
+import static jdk.tools.jmod.Main.main;
+
+public class RockPaperScissors {
+    public boolean keepPlaying;
+
+    public static void main(String[] args) {
+    // Boolean variable which is true until player wants to quit
+    boolean keepPlaying = true;
+    
+    Scanner input = new Scanner(System.in);
+    Random r = new Random(); 
+    
+        int cMove = r.nextInt(3) + 1;
+        int uMove = 0;
         int cScore = 0;
         int pScore = 0;
         int tie = 0;
         int rounds = 0;
-        Random r = new Random();
-        Scanner input = new Scanner(System.in);
-        cMove = r.nextInt(3) + 1;
 
+        String answer = "yes";
 
         while (answer.equalsIgnoreCase("yes")) {
             System.out.println("Choose your move!");
             System.out.println("Enter 1 for rock, 2 for paper, or 3 for scissors:");
-            userMove = input.nextInt();
+
+            int userMove = input.nextInt();
             while (input.hasNextInt()) {
                 if (userMove != 1 && userMove != 2 && userMove != 3) {
                     System.out.println("Invalid move. Try again.");
                     System.out.println("Enter your move: ");
-                    input.nextInt();
+                    userMove = input.nextInt();
                 }
             }
+
             if (userMove == 1) {
                 System.out.println("You have chosen rock!");
             } else if (userMove == 2) {
@@ -74,25 +85,26 @@ public class RockPaperScissors {
                 cScore++;
                 rounds++;
             }
-
-
-
+            
 
             System.out.println("Would you like to play again?");
-            System.out.println("\"Yes\" or \"no\"?");
+            System.out.println("Yes or no?");
             input.next();
             answer = input.next();
 
 
             if (answer.equalsIgnoreCase("yes")) {
-                main(null);
+                try {
+                    main(null);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             } else {
                 System.out.println("Here is the final score after " + rounds + "rounds:");
                 System.out.println("You: " + pScore + "Computer: " + cScore + "Ties: " + tie);
             }
         }
     }
-}
 
     public void run() {
         System.out.println("Rock Paper Scissors - TBD");
@@ -104,6 +116,6 @@ public class RockPaperScissors {
      * For now just changes flog so this can exit
      */
     public void checkExit() {
-        keepPlaying = false;
+        boolean keepPlaying = false;
     }
 }
