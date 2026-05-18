@@ -2,8 +2,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class RockPaperScissors {
-    // Boolean variable which is true until player wants to quit
-    public boolean keepPlaying = true;
+    public boolean keepPlaying;
 
     /**
      * Runs the main game loop - calling other functions as needed.

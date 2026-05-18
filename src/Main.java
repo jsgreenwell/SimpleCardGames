@@ -1,4 +1,5 @@
 import java.util.Scanner;
+// Y started coding
 
 public class Main {
     public static void main(String[] args) {
@@ -37,10 +38,10 @@ public class Main {
                     }
                     break;
                 case 2:
-                    RockPaperScissors rps = new RockPaperScissors();
-                    while (rps.keepPlaying) {
-                        rps.run();
-                        rps.checkExit();
+                     RockPaperScissors rockpaperscissors = new RockPaperScissors();
+                    while (rockpaperscissors.keepPlaying) {
+                        rockpaperscissors.run();
+                        rockpaperscissors.checkExit();
                     }
                     break;
                 case 3:
