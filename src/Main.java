@@ -10,11 +10,12 @@ public class Main {
                     Hello and Welcome to the main menu!
                     Please select from the following options (or 9 to exit):
                         0: Boogle
-                        1: Card Game
+                        1: War
                         2: Rock Paper Scissors
                         3: Word Scamble
                         4: Tic Tac Toe
                         5: Wheel of Fortune
+                        6: Black Jack
                         9: Exit
                     Enter the number of your selection:
                     """);
@@ -29,10 +30,10 @@ public class Main {
                     }
                     break;
                 case 1:
-                    CardGame cardgame = new CardGame();
-                    while (cardgame.keepPlaying) {
-                        cardgame.run();
-                        cardgame.checkExit();
+                    CardGames war = new CardGames();
+                    while (war.keepPlaying) {
+                        war.runWar();
+                        war.checkExit();
                     }
                     break;
                 case 2:
@@ -61,6 +62,13 @@ public class Main {
                     while (wheel.keepPlaying) {
                         wheel.run();
                         wheel.checkExit();
+                    }
+                    break;
+                case 6:
+                    CardGames blackjack = new CardGames();
+                    while (blackjack.keepPlaying) {
+                        blackjack.runBlackjack();
+                        blackjack.checkExit();
                     }
                     break;
                 default:
